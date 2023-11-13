@@ -1,0 +1,1 @@
+"""The fortniteapi_io integration."""
