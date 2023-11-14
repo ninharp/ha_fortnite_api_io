@@ -29,12 +29,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-# def setup_platform(
-#     hass: HomeAssistant,
-#     config: ConfigType,
-#     add_entities: AddEntitiesCallback,
-#     discovery_info: DiscoveryInfoType | None = None
-# ) -> None:
 def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up the sensor platform."""
 
@@ -47,7 +41,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     fn = FortniteData(name, api_key, player_id, game_mode)
 
     if not fn:
-        _LOGGER.error("Unable to create the fortnite sensor")
+        _LOGGER.error("Unable to create the fortniteapi.io sensor")
         return
 
     add_entities([FortniteSensor(hass, fn)], True)
@@ -123,6 +117,8 @@ class FortniteData:
         self.attr["lastmodified"] = self.stats.lastmodified
         self.attr["id"] = self.player
         self.attr["map"] = self.game.get_current_map()
+
+        self.attr["levelhistory"]["muh"] = "maeh"
 
     def print_stats(self):
         print(self.stats)

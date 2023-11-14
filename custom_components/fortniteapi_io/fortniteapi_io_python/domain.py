@@ -27,6 +27,7 @@ class Domain:
     def __init__(self, data, meta=None):
         """Creates data object"""
         self._data = data
+        self.id = 1
         self.from_json()
 
     def __repr__(self):
@@ -39,7 +40,6 @@ class Domain:
 
     def from_json(self):
         """Sets default id to 1"""
-        self.id = 1
         for key in self._data:
             if 'id' in key or 'Id' in key or 'ID' in key:
                 value = self._data.get(key)
@@ -48,7 +48,7 @@ class Domain:
             value = self._data.get(key)
             setattr(self, self.to_snake(key),
                 value if type(value) != dict else value.get('value'))
-
+            
     def to_snake(self, name):
         s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
         return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
@@ -76,10 +76,13 @@ class Player(Domain):
         self.level = self._account.get('level')
         self.season = self._account.get('season')
 
+
     def get_stats(self, mode=Mode.SQUAD):
         stats = self._global_stats.get(mode.value)
         return Stats(stats)
-
+    
+    def get_level_history(self):
+        return LevelHistory(self._accountLevelHistory)
 
 class Stats(Domain):
     """Object containing stats items attributes"""
@@ -111,22 +114,11 @@ class Stats(Domain):
         return stats
 
 
-class Challenge(Domain):
-    """Object containing challenge items attributes"""
+class LevelHistory(list):
+    """Object containing level history"""
 
-    def from_json(self):
-        """Takes in arguments and sets attributes to default by placement"""
-        super().from_json()
-        self.name = self.metadata[1].get('value')
-        self.quest_completed = self.metadata[2].get('value')
-        self.quest_total = self.metadata[3].get('value')
-        self.reward_picture_url = self.metadata[4].get('value')
-        self.reward_name = self.metadata[5].get('value')
-
-
-class StoreItem(Domain):
-    """Object containing store items attributes"""
-
-
-class Match(Domain):
-    """Object containing match attributes"""
+    def __str__(self):
+        level_history = ''
+        for season in self:
+            level_history += ("History Season %s: %s\n") % (season.get("season"), season.get("level"))
+        return level_history
