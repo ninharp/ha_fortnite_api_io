@@ -118,7 +118,7 @@ class FortniteData:
         self.attr["id"] = self.player
         self.attr["map"] = self.game.get_current_map()
 
-        self.attr["levelhistory"]["muh"] = "maeh"
+        self.attr["levelhistory"] = self.fplayer.get_level_history()
 
     def print_stats(self):
         print(self.stats)
