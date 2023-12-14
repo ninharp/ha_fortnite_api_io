@@ -11,12 +11,15 @@ from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
+from datetime import timedelta
 
 from .fortniteapi_io_python.base import FortniteAPI_IO
 from .fortniteapi_io_python.domain import Languages, Mode, Input
 from .fortniteapi_io_python.exceptions import UnauthorizedError, UnknownPlayerError
 
 _LOGGER = logging.getLogger(__name__)
+
+SCAN_INTERVAL = timedelta(minutes=10)
 
 DOMAIN = "sensor"
 
