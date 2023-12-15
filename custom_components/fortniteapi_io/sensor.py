@@ -76,7 +76,7 @@ class FortniteSensor(Entity):
         return "Eliminations"
 
     def update(self):
-        _LOGGER.verbose("update fortnite.io sensor")
+        #_LOGGER.debug("update fortnite.io sensor")
         self.data.update_stats()
 
 
