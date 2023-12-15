@@ -19,7 +19,7 @@ from .fortniteapi_io_python.exceptions import UnauthorizedError, UnknownPlayerEr
 
 _LOGGER = logging.getLogger(__name__)
 
-SCAN_INTERVAL = timedelta(minutes=10)
+SCAN_INTERVAL = timedelta(minutes=5)
 
 DOMAIN = "sensor"
 
@@ -76,6 +76,7 @@ class FortniteSensor(Entity):
         return "Eliminations"
 
     def update(self):
+        _LOGGER.verbose("update fortnite.io sensor")
         self.data.update_stats()
 
 
@@ -97,6 +98,7 @@ class FortniteData:
             pass
 
     def update_stats(self):
+        self.fplayer = self.game.player(self.player)
         self.stats = self.fplayer.get_stats(self.mode)
         # _LOGGER.info(self.stats)
         # transform stats into a dict
